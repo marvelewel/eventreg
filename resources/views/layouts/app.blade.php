@@ -55,12 +55,62 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-slate-500 text-sm font-medium mb-1">&copy; {{ date('Y') }} EventReg by Marvel Jeremia. All rights reserved.</p>
-            <p class="text-slate-400 text-xs">Final Project Pemrograman Web</p>
-        </div>
-    </footer>
+    <!-- Render Large Footer ONLY for public routes -->
+    @if(!request()->is('admin*') && !request()->is('user*'))
+        <footer class="bg-blue-900 text-white/80 py-12 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                    <div class="md:col-span-1">
+                        <a href="{{ url('/') }}" class="flex items-center text-white font-bold text-2xl tracking-tight mb-4">
+                            <i class="bi bi-calendar-event me-2"></i> EventReg
+                        </a>
+                        <p class="text-sm">Your Professional Ticketing Partner</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-4">Tentang Kami</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Our Journey</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Hubungi Kami</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Biaya</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-4">Informasi</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">FAQ</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Tiket Gelang</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-4">Kategori Event</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="hover:text-white transition-colors">Musik</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Pameran</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Wahana</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Olahraga</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-xs font-medium mb-4 md:mb-0">&copy; {{ date('Y') }} EventReg by Marvel Jeremia. Hak Cipta Dilindungi.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white/80 hover:text-white"><i class="bi bi-whatsapp"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="text-white/80 hover:text-white"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    @else
+        <!-- Mini Footer for Admin/User Dashboards -->
+        <footer class="py-6 text-center text-sm text-slate-400 bg-slate-50 mt-auto border-t border-slate-200">
+            &copy; {{ date('Y') }} EventReg by Marvel Jeremia. Hak Cipta Dilindungi.
+        </footer>
+    @endif
 
     <!-- Inline scripts for active state & confirmation -->
     <script>

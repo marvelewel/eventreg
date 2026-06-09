@@ -88,20 +88,35 @@ Kebutuhan user:
 
 Ruang lingkup EventReg dibatasi pada fitur inti berikut:
 
-1. Authentication sederhana.
-2. Hak akses berdasarkan role admin dan user.
-3. CRUD data event.
-4. Daftar event untuk user.
-5. Detail event.
-6. Pendaftaran event oleh user.
-7. Riwayat pendaftaran user.
-8. Pengelolaan status pendaftaran oleh admin.
-9. Dashboard statistik sederhana.
-10. Pencarian event.
-11. Pagination daftar event.
-12. Validasi form.
-13. Halaman statis About.
-14. Tampilan responsif menggunakan Bootstrap.
+Authentication sederhana.
+
+Hak akses berdasarkan role admin dan user.
+
+CRUD data event.
+
+Upload gambar/poster event (Implementasi Fitur Dinamis).
+
+Daftar event untuk user.
+
+Detail event.
+
+Pendaftaran event oleh user.
+
+Riwayat pendaftaran user.
+
+Pengelolaan status pendaftaran oleh admin.
+
+Dashboard statistik sederhana.
+
+Pencarian event.
+
+Pagination daftar event.
+
+Validasi form.
+
+Halaman statis About.
+
+Tampilan responsif menggunakan CSS Framework (Tailwind CSS).
 
 ---
 
@@ -109,18 +124,27 @@ Ruang lingkup EventReg dibatasi pada fitur inti berikut:
 
 Agar sistem tidak terlalu luas, EventReg tidak mencakup fitur berikut:
 
-1. Pembayaran event.
-2. QR code tiket.
-3. Sertifikat otomatis.
-4. Email notification.
-5. Absensi peserta.
-6. Komentar event.
-7. Rating event.
-8. Multi-admin kompleks.
-9. Upload poster event.
-10. Kalender event kompleks.
-11. Integrasi API eksternal.
-12. Chat atau forum diskusi.
+Pembayaran event.
+
+QR code tiket.
+
+Sertifikat otomatis.
+
+Email notification.
+
+Absensi peserta.
+
+Komentar event.
+
+Rating event.
+
+Multi-admin kompleks.
+
+Kalender event kompleks. (Catatan: Poin Upload Poster dihapus dari daftar batasan ini)
+
+Integrasi API eksternal.
+
+Chat atau forum diskusi.
 
 Batasan ini dibuat agar sistem tetap fokus pada ketentuan utama Final Project, yaitu CRUD, database, fitur dinamis, fitur statis, dan responsive web.
 
@@ -182,6 +206,7 @@ Fitur CRUD event hanya dapat digunakan oleh admin.
 | `date` | Tanggal pelaksanaan event |
 | `location` | Lokasi event |
 | `quota` | Kuota peserta |
+| `poster` | File gambar/poster representasi event |
 | `status` | Status event |
 
 ### Operasi CRUD
@@ -201,12 +226,19 @@ User dapat melihat daftar event yang tersedia.
 
 ### Informasi yang Ditampilkan
 
-- Nama event.
-- Tanggal event.
-- Lokasi event.
-- Kuota peserta.
-- Status event.
-- Tombol detail event.
+Poster event.
+
+Nama event.
+
+Tanggal event.
+
+Lokasi event.
+
+Kuota peserta.
+
+Status event.
+
+Tombol detail event.
 
 ### Catatan
 
@@ -220,14 +252,23 @@ User dapat melihat informasi lengkap dari sebuah event sebelum melakukan pendaft
 
 ### Informasi Detail Event
 
-- Nama event.
-- Deskripsi event.
-- Tanggal event.
-- Lokasi event.
-- Kuota peserta.
-- Jumlah peserta terdaftar.
-- Status event.
-- Tombol daftar event.
+Poster event ukuran penuh.
+
+Nama event.
+
+Deskripsi event.
+
+Tanggal event.
+
+Lokasi event.
+
+Kuota peserta.
+
+Jumlah peserta terdaftar.
+
+Status event.
+
+Tombol daftar event.
 
 ---
 

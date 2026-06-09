@@ -1,157 +1,43 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-// Dummy Data
-$events = [
-    [
-        'id' => 1,
-        'title' => 'Seminar Karier Digital 2026',
-        'description' => 'Mempersiapkan diri menghadapi tantangan karier di era digital 2026. Pembicara dari berbagai perusahaan teknologi terkemuka akan hadir membagikan insight menarik.',
-        'date' => '2026-08-15',
-        'location' => 'Gedung Serbaguna A, Universitas Teknologi',
-        'quota' => 200,
-        'registered_count' => 150,
-        'status' => 'published',
-    ],
-    [
-        'id' => 2,
-        'title' => 'Workshop UI/UX Dasar',
-        'description' => 'Pelatihan intensif 1 hari untuk mempelajari dasar-dasar User Interface dan User Experience menggunakan Figma.',
-        'date' => '2026-08-20',
-        'location' => 'Lab Komputer 1',
-        'quota' => 50,
-        'registered_count' => 50,
-        'status' => 'published',
-    ],
-    [
-        'id' => 3,
-        'title' => 'Talkshow Startup Mahasiswa',
-        'description' => 'Diskusi panel bersama para founder startup mahasiswa yang berhasil mendapatkan pendanaan tahap awal. Belajar cara membangun ide hingga eksekusi.',
-        'date' => '2026-08-25',
-        'location' => 'Auditorium Utama',
-        'quota' => 300,
-        'registered_count' => 120,
-        'status' => 'published',
-    ],
-];
-
-$registrations = [
-    [
-        'id' => 1,
-        'user_name' => 'Budi Santoso',
-        'event_id' => 1,
-        'event_name' => 'Seminar Karier Digital 2026',
-        'event_date' => '2026-08-15',
-        'event_location' => 'Gedung Serbaguna A, Universitas Teknologi',
-        'registered_at' => '2026-06-01 10:00:00',
-        'status' => 'pending',
-    ],
-    [
-        'id' => 2,
-        'user_name' => 'Siti Aminah',
-        'event_id' => 2,
-        'event_name' => 'Workshop UI/UX Dasar',
-        'event_date' => '2026-08-20',
-        'event_location' => 'Lab Komputer 1',
-        'registered_at' => '2026-06-02 14:30:00',
-        'status' => 'accepted',
-    ],
-    [
-        'id' => 3,
-        'user_name' => 'Andi Wijaya',
-        'event_id' => 3,
-        'event_name' => 'Talkshow Startup Mahasiswa',
-        'event_date' => '2026-08-25',
-        'event_location' => 'Auditorium Utama',
-        'registered_at' => '2026-06-03 09:15:00',
-        'status' => 'accepted',
-    ],
-    [
-        'id' => 4,
-        'user_name' => 'Dewi Lestari',
-        'event_id' => 1,
-        'event_name' => 'Seminar Karier Digital 2026',
-        'event_date' => '2026-08-15',
-        'event_location' => 'Gedung Serbaguna A, Universitas Teknologi',
-        'registered_at' => '2026-06-04 16:45:00',
-        'status' => 'rejected',
-    ],
-    [
-        'id' => 5,
-        'user_name' => 'Rizky Pratama',
-        'event_id' => 2,
-        'event_name' => 'Workshop UI/UX Dasar',
-        'event_date' => '2026-08-20',
-        'event_location' => 'Lab Komputer 1',
-        'registered_at' => '2026-06-05 11:20:00',
-        'status' => 'pending',
-    ],
-];
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\RegistrationController;
 
 // PUBLIC ROUTES
-Route::get('/', function () {
-    return view('home');
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+Route::view('/about', 'about');
+
+// AUTH ROUTES (Guest only)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
 });
 
-Route::get('/events', function () use ($events) {
-    return view('events.index', compact('events'));
-});
-
-Route::get('/events/{id}', function ($id) use ($events) {
-    $event = collect($events)->firstWhere('id', $id);
-    if (!$event) {
-        abort(404);
-    }
-    return view('events.show', compact('event'));
-});
-
-Route::get('/about', function () {
-    return view('about');
-});
-
-// AUTH ROUTES
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-Route::get('/register', function () {
-    return view('auth.register');
-});
+// Logout Route (Authenticated only)
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // ADMIN ROUTES
-Route::prefix('admin')->group(function () use ($events, $registrations) {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('events', AdminEventController::class);
 
-    Route::get('/events', function () use ($events) {
-        return view('admin.events.index', compact('events'));
-    });
-
-    Route::get('/events/create', function () {
-        return view('admin.events.create');
-    });
-
-    Route::get('/events/{id}/edit', function ($id) use ($events) {
-        $event = collect($events)->firstWhere('id', $id);
-        return view('admin.events.edit', compact('event'));
-    });
-
-    Route::get('/registrations', function () use ($registrations) {
-        return view('admin.registrations.index', compact('registrations'));
-    });
+    Route::get('/registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
+    Route::patch('/registrations/{registration}/status', [AdminRegistrationController::class, 'update'])->name('registrations.update');
 });
 
 // USER ROUTES
-Route::prefix('user')->group(function () use ($registrations) {
-    Route::get('/dashboard', function () {
-        return view('user.dashboard');
-    });
-
-    Route::get('/registrations', function () use ($registrations) {
-        // Mock filtering registrations to only show current user's (e.g. Budi Santoso and Andi Wijaya's stuff to simulate)
-        // Or just pass all for visual demo purpose
-        return view('user.registrations', compact('registrations'));
-    });
+Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::post('/events/{event}/register', [RegistrationController::class, 'store'])->name('user.registrations.store');
 });

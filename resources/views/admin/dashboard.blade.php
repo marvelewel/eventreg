@@ -12,8 +12,8 @@
         </button>
         <div x-show="open" style="display: none;" class="origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-slate-100 z-10">
             <div class="py-1">
-                <a href="{{ url('/admin/events') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Kelola Event</a>
-                <a href="{{ url('/admin/registrations') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Kelola Pendaftaran</a>
+                <a href="{{ route('admin.events.index') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Kelola Event</a>
+                <a href="{{ route('admin.registrations.index') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Kelola Pendaftaran</a>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex justify-between items-center">
         <div>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Event</p>
-            <p class="text-3xl font-extrabold text-slate-900">12</p>
+            <p class="text-3xl font-extrabold text-slate-900">{{ $totalEvents }}</p>
         </div>
         <div class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 text-slate-600">
             <i class="bi bi-calendar-event text-xl"></i>
@@ -33,7 +33,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex justify-between items-center">
         <div>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total User</p>
-            <p class="text-3xl font-extrabold text-slate-900">145</p>
+            <p class="text-3xl font-extrabold text-slate-900">{{ $totalUsers }}</p>
         </div>
         <div class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-50 text-emerald-600">
             <i class="bi bi-people text-xl"></i>
@@ -43,7 +43,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex justify-between items-center">
         <div>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Pendaftar</p>
-            <p class="text-3xl font-extrabold text-slate-900">328</p>
+            <p class="text-3xl font-extrabold text-slate-900">{{ $totalRegistrations }}</p>
         </div>
         <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-50 text-indigo-600">
             <i class="bi bi-card-checklist text-xl"></i>
@@ -53,7 +53,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex justify-between items-center">
         <div>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Pending</p>
-            <p class="text-3xl font-extrabold text-slate-900">24</p>
+            <p class="text-3xl font-extrabold text-slate-900">{{ $pendingRegistrations }}</p>
         </div>
         <div class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-50 text-amber-600">
             <i class="bi bi-hourglass-split text-xl"></i>
@@ -66,7 +66,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden h-full flex flex-col">
             <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
                 <h3 class="text-base font-bold text-slate-900">Pendaftaran Terbaru</h3>
-                <a href="{{ url('/admin/registrations') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-700">Lihat Semua</a>
+                <a href="{{ route('admin.registrations.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-700">Lihat Semua</a>
             </div>
             <div class="overflow-x-auto flex-grow">
                 <table class="min-w-full divide-y divide-slate-200">
@@ -79,31 +79,28 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
-                        <!-- Dummy Data for Preview -->
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Budi Santoso</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Seminar Karier Digital 2026</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">01 Jun 2026</td>
+                        @forelse($recentRegistrations as $reg)
+                        <tr class="hover:bg-slate-50 transition-colors cursor-default">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{{ $reg->user->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ $reg->event->title }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ $reg->created_at->format('d M Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Pending</span>
+                                @if($reg->status === 'pending')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Pending</span>
+                                @elseif($reg->status === 'accepted')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Accepted</span>
+                                @elseif($reg->status === 'rejected')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10">Rejected</span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 ring-1 ring-inset ring-slate-500/20">{{ ucfirst($reg->status) }}</span>
+                                @endif
                             </td>
                         </tr>
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Siti Aminah</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Workshop UI/UX Dasar</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">02 Jun 2026</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Accepted</span>
-                            </td>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-sm text-slate-500">Belum ada data pendaftaran.</td>
                         </tr>
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Andi Wijaya</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Talkshow Startup Mahasiswa</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">03 Jun 2026</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Accepted</span>
-                            </td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -116,7 +113,7 @@
                 <h3 class="text-base font-bold text-slate-900">Aksi Cepat</h3>
             </div>
             <div class="p-6 space-y-4 flex-grow">
-                <a href="{{ url('/admin/events/create') }}" class="flex items-center p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all group">
+                <a href="{{ route('admin.events.create') }}" class="flex items-center p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all group">
                     <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-white border border-slate-200 shadow-sm text-slate-600 group-hover:text-slate-900 mr-4">
                         <i class="bi bi-plus-lg text-lg"></i>
                     </div>
@@ -126,7 +123,7 @@
                     </div>
                 </a>
                 
-                <a href="{{ url('/admin/events') }}" class="flex items-center p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all group">
+                <a href="{{ route('admin.events.index') }}" class="flex items-center p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all group">
                     <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-white border border-slate-200 shadow-sm text-slate-600 group-hover:text-slate-900 mr-4">
                         <i class="bi bi-list-task text-lg"></i>
                     </div>

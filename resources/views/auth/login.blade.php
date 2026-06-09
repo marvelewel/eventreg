@@ -15,10 +15,20 @@
                     <p class="text-sm text-slate-500 font-medium">Silakan masukkan email dan password Anda</p>
                 </div>
 
-                <form action="#" method="POST" class="space-y-6">
+                @if ($errors->any())
+                    <div class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200">
+                        <div class="flex items-center gap-2 text-red-700 text-sm font-medium">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <span>{{ $errors->first() }}</span>
+                        </div>
+                    </div>
+                @endif
+
+                <form action="{{ route('login') }}" method="POST" class="space-y-6">
+                    @csrf
                     <div>
                         <label for="email" class="block text-sm font-semibold text-slate-900 mb-1.5">Alamat Email</label>
-                        <input type="email" id="email" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="name@example.com" required>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="name@example.com" required>
                     </div>
 
                     <div>
@@ -26,11 +36,11 @@
                             <label for="password" class="block text-sm font-semibold text-slate-900">Password</label>
                             <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors">Lupa password?</a>
                         </div>
-                        <input type="password" id="password" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="••••••••" required>
+                        <input type="password" id="password" name="password" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="••••••••" required>
                     </div>
 
                     <div class="flex items-center">
-                        <input id="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded">
+                        <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded">
                         <label for="remember" class="ml-2 block text-sm font-medium text-slate-600">
                             Ingat Saya
                         </label>

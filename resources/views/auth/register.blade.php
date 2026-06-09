@@ -15,25 +15,36 @@
                     <p class="text-sm text-slate-500 font-medium">Daftar sekarang untuk mengikuti berbagai event menarik</p>
                 </div>
 
-                <form action="#" method="POST" class="space-y-6">
+                @if ($errors->any())
+                    <div class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200">
+                        <ul class="text-red-700 text-sm font-medium space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li class="flex items-center gap-2"><i class="bi bi-exclamation-circle"></i> {{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('register') }}" method="POST" class="space-y-6">
+                    @csrf
                     <div>
                         <label for="name" class="block text-sm font-semibold text-slate-900 mb-1.5">Nama Lengkap</label>
-                        <input type="text" id="name" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="Masukkan nama lengkap Anda" required>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="Masukkan nama lengkap Anda" required>
                     </div>
                     
                     <div>
                         <label for="email" class="block text-sm font-semibold text-slate-900 mb-1.5">Alamat Email</label>
-                        <input type="email" id="email" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="name@example.com" required>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="name@example.com" required>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="password" class="block text-sm font-semibold text-slate-900 mb-1.5">Password</label>
-                            <input type="password" id="password" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="••••••••" required>
+                            <input type="password" id="password" name="password" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="••••••••" required>
                         </div>
                         <div>
                             <label for="password_confirmation" class="block text-sm font-semibold text-slate-900 mb-1.5">Konfirmasi Password</label>
-                            <input type="password" id="password_confirmation" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="••••••••" required>
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="block w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white sm:text-sm transition-all" placeholder="••••••••" required>
                         </div>
                     </div>
 
