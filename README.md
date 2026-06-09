@@ -1,59 +1,240 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EventReg - Sistem Manajemen Pendaftaran Event
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**EventReg** adalah aplikasi web untuk mengelola data event dan pendaftaran peserta, dibangun menggunakan **Laravel 12** dan **Tailwind CSS**. Sistem ini mendukung dua peran pengguna: **Admin** (mengelola event dan pendaftaran) dan **User/Peserta** (mendaftar event dan memantau status).
 
-## About Laravel
+Dikembangkan oleh **Marvel Jeremia** sebagai Final Project Pemrograman Web 2026.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Daftar Isi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Persyaratan Sistem](#-persyaratan-sistem)
+- [Langkah Instalasi](#-langkah-instalasi)
+- [Setup Database](#-setup-database)
+- [Setup Storage Link](#-setup-storage-link)
+- [Menjalankan Aplikasi](#-menjalankan-aplikasi)
+- [Akun Testing](#-akun-testing)
+- [Fitur Utama](#-fitur-utama)
+- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🖥 Persyaratan Sistem
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Pastikan perangkat Anda telah memenuhi persyaratan berikut sebelum melakukan instalasi:
 
-## Laravel Sponsors
+| Persyaratan | Versi Minimum |
+|-------------|---------------|
+| PHP | >= 8.2 |
+| Composer | >= 2.x |
+| Node.js | >= 18.x |
+| NPM | >= 9.x |
+| MySQL / MariaDB | >= 8.0 / 10.x |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🚀 Langkah Instalasi
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Clone atau Ekstrak Project
 
-## Contributing
+```bash
+git clone https://github.com/username/eventreg.git
+cd eventreg
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Atau ekstrak file `.zip` project, lalu buka terminal di dalam direktori project tersebut.
 
-## Code of Conduct
+### 2. Install Dependensi PHP
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+### 3. Install Dependensi Frontend & Compile Asset
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+npm install
+npm run build
+```
 
-## License
+Perintah `npm run build` akan mengompilasi Tailwind CSS dan JavaScript menjadi file produksi yang siap digunakan.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Konfigurasi Environment
+
+Salin file `.env.example` menjadi `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Buka file `.env` dan sesuaikan konfigurasi database dengan pengaturan lokal Anda:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=eventreg_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+> **Catatan:** Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan kredensial MySQL/MariaDB di perangkat Anda.
+
+### 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## 🗄 Setup Database
+
+Buat database baru di MySQL/MariaDB dengan nama sesuai konfigurasi `.env` (contoh: `eventreg_db`). Kemudian pilih **salah satu** opsi berikut:
+
+### Opsi 1: Otomatis via Artisan (Disarankan)
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Perintah ini akan:
+- Membuat seluruh tabel yang dibutuhkan (users, events, registrations, dll.)
+- Mengisi data dummy secara otomatis (akun admin, akun peserta, dan 3 event contoh)
+
+### Opsi 2: Import Manual via SQL
+
+Import file `eventreg_db.sql` yang tersedia di root project langsung ke database menggunakan tools seperti **phpMyAdmin**, **TablePlus**, atau command line:
+
+```bash
+mysql -u root -p eventreg_db < eventreg_db.sql
+```
+
+> **Catatan:** Pastikan database `eventreg_db` sudah dibuat terlebih dahulu sebelum melakukan import.
+
+---
+
+## 🔗 Setup Storage Link
+
+**Langkah ini wajib dilakukan** agar gambar poster event yang diunggah oleh admin dapat ditampilkan di halaman publik website.
+
+```bash
+php artisan storage:link
+```
+
+Perintah ini membuat symbolic link dari `public/storage` ke `storage/app/public`, sehingga file yang diunggah dapat diakses melalui URL publik.
+
+---
+
+## ▶ Menjalankan Aplikasi
+
+Jalankan server development Laravel:
+
+```bash
+php artisan serve
+```
+
+Akses aplikasi melalui browser di alamat:
+
+```
+http://localhost:8000
+```
+
+> **Tips:** Jika menggunakan `npm run dev` (bukan `npm run build`), jalankan perintah tersebut di terminal terpisah agar Vite melakukan hot-reload saat pengembangan.
+
+---
+
+## 🔑 Akun Testing
+
+Berikut adalah akun default yang sudah tersedia setelah menjalankan seeder:
+
+### Admin
+| Field | Value |
+|-------|-------|
+| Email | `admin@eventreg.com` |
+| Password | `password` |
+| Akses | Dashboard Admin, CRUD Event, Kelola Pendaftaran |
+
+### Peserta (User)
+| Field | Value |
+|-------|-------|
+| Email | `peserta@eventreg.com` |
+| Password | `password` |
+| Akses | Dashboard User, Daftar Event, Riwayat Pendaftaran |
+
+---
+
+## ✨ Fitur Utama
+
+### Fitur Admin
+- 📊 **Dashboard** — Ringkasan statistik (total event, total user, total pendaftaran, pending)
+- 📝 **CRUD Event** — Tambah, lihat, edit, dan hapus event dengan upload poster
+- ✅ **Kelola Pendaftaran** — Terima (Accept) atau Tolak (Reject) pendaftaran peserta
+
+### Fitur User / Peserta
+- 🔍 **Pencarian Event** — Cari event berdasarkan judul
+- 📋 **Detail Event** — Lihat informasi lengkap event beserta kuota dan status
+- 📝 **Pendaftaran Event** — Daftar event dengan validasi otomatis (cek kuota, cek duplikasi, cek status)
+- 📈 **Riwayat Pendaftaran** — Pantau status pendaftaran (Pending / Accepted / Rejected)
+
+### Fitur Umum
+- 🔐 **Autentikasi** — Register, Login, dan Logout dengan session
+- 🛡 **Hak Akses** — Middleware role-based (admin vs user) dengan proteksi 403
+- 📱 **Responsif** — Tampilan responsif untuk desktop dan mobile (Tailwind CSS)
+- 📄 **Halaman Statis** — Halaman About sebagai informasi sistem
+- 📦 **Pagination** — Daftar event dengan pagination untuk performa optimal
+
+---
+
+## 🛠 Teknologi yang Digunakan
+
+| Teknologi | Keterangan |
+|-----------|-----------|
+| **Laravel 12** | Framework PHP untuk backend |
+| **Blade** | Template engine untuk frontend |
+| **Tailwind CSS** | CSS framework untuk styling responsif |
+| **Alpine.js** | Library JavaScript ringan untuk interaktivitas |
+| **MySQL / MariaDB** | Database relasional |
+| **Vite** | Build tool untuk kompilasi asset |
+| **Bootstrap Icons** | Library ikon |
+| **Google Fonts (Inter)** | Tipografi modern |
+
+---
+
+## 📁 Struktur Direktori Utama
+
+```
+eventreg/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/           # Controller untuk admin (Dashboard, Event CRUD, Registrasi)
+│   │   │   ├── User/            # Controller untuk user (Dashboard, Pendaftaran)
+│   │   │   ├── AuthController   # Login, Register, Logout
+│   │   │   ├── EventController  # Daftar & Detail event publik
+│   │   │   └── HomeController   # Halaman beranda
+│   │   └── Middleware/
+│   │       └── RoleMiddleware   # Proteksi akses berdasarkan role
+│   └── Models/                  # Model Eloquent (User, Event, Registration)
+├── database/
+│   ├── migrations/              # Skema tabel database
+│   └── seeders/                 # Data dummy (admin, user, event)
+├── resources/views/
+│   ├── admin/                   # View halaman admin
+│   ├── auth/                    # View login & register
+│   ├── events/                  # View daftar & detail event
+│   ├── layouts/                 # Layout utama (app.blade.php)
+│   ├── partials/                # Komponen (navbar)
+│   └── user/                    # View dashboard user
+├── routes/web.php               # Definisi semua route
+├── eventreg_db.sql              # File SQL untuk import manual
+└── prd.md                       # Dokumen Product Requirements
+```
+
+---
+
+## 📝 Lisensi
+
+Project ini dikembangkan untuk keperluan akademik — Final Project Pemrograman Web 2026.
+
+© 2026 Marvel Jeremia. Hak Cipta Dilindungi.
