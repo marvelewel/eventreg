@@ -1,6 +1,6 @@
 # EventReg - Sistem Manajemen Pendaftaran Event
 
-**EventReg** adalah aplikasi web untuk mengelola data event dan pendaftaran peserta, dibangun menggunakan **Laravel 12** dan **Tailwind CSS**. Sistem ini mendukung dua peran pengguna: **Admin** (mengelola event dan pendaftaran) dan **User/Peserta** (mendaftar event dan memantau status).
+**EventReg** adalah aplikasi web untuk mengelola data event dan pendaftaran peserta, dibangun menggunakan **Laravel 12** dan **Tailwind CSS**. Sistem ini mendukung dua peran pengguna: **Admin** (mengelola event dan pendaftaran) dan **User/Peserta** (mendaftar event dan memantau status). Sistem kini dilengkapi dengan dukungan fitur **Event Berbayar (Paid Events)** beserta alur unggah bukti pembayaran yang terintegrasi.
 
 Dikembangkan oleh **Marvel Jeremia** sebagai Final Project Pemrograman Web 2026.
 
@@ -99,7 +99,7 @@ php artisan migrate:fresh --seed
 ```
 
 Perintah ini akan:
-- Membuat seluruh tabel yang dibutuhkan (users, events, registrations, dll.)
+- Membuat seluruh tabel yang dibutuhkan (users, events, registrations, dll.) beserta kolom `price` dan `payment_proof`.
 - Mengisi data dummy secara otomatis (akun admin, akun peserta, dan 3 event contoh)
 
 ### Opsi 2: Import Manual via SQL

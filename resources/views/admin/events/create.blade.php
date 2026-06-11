@@ -69,6 +69,13 @@
                         <input type="number" id="quota" name="quota" min="1" value="{{ old('quota') }}" class="block w-full px-4 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-shadow" placeholder="100" required>
                     </div>
                     <div>
+                        <label for="price" class="block text-sm font-semibold text-slate-900 mb-2">Biaya Pendaftaran (Rp) <span class="text-red-500">*</span></label>
+                        <input type="number" id="price" name="price" min="0" value="{{ old('price', 0) }}" class="block w-full px-4 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-shadow" placeholder="0 untuk gratis" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
                         <label for="status" class="block text-sm font-semibold text-slate-900 mb-2">Status <span class="text-red-500">*</span></label>
                         <select id="status" name="status" class="block w-full px-4 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-shadow" required>
                             <option value="available" {{ old('status') === 'available' ? 'selected' : '' }}>Available</option>

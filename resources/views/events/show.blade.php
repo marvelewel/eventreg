@@ -9,19 +9,7 @@
     </a>
 </div>
 
-{{-- Flash Messages --}}
-@if(session('success'))
-    <div class="mb-6 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-3">
-        <i class="bi bi-check-circle-fill text-lg"></i>
-        <p class="text-sm font-medium">{{ session('success') }}</p>
-    </div>
-@endif
-@if(session('error'))
-    <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 flex items-center gap-3">
-        <i class="bi bi-exclamation-triangle-fill text-lg"></i>
-        <p class="text-sm font-medium">{{ session('error') }}</p>
-    </div>
-@endif
+
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <div class="lg:col-span-2">
@@ -102,6 +90,12 @@
                     <div class="flex justify-between items-center">
                         <dt class="text-sm font-medium text-slate-500">Kuota Tersedia</dt>
                         <dd class="text-sm font-bold text-slate-900">{{ max(0, $event->quota - $registeredCount) }} Orang</dd>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <dt class="text-sm font-medium text-slate-500">Biaya Pendaftaran</dt>
+                        <dd class="text-sm font-bold {{ $event->price == 0 ? 'text-emerald-600' : 'text-slate-900' }}">
+                            {{ $event->price == 0 ? 'Gratis' : 'Rp ' . number_format($event->price, 0, ',', '.') }}
+                        </dd>
                     </div>
                     <div class="flex justify-between items-center">
                         <dt class="text-sm font-medium text-slate-500">Pendaftar</dt>

@@ -40,4 +40,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::post('/events/{event}/register', [RegistrationController::class, 'store'])->name('user.registrations.store');
+    
+    Route::get('/events/{event}/payment', [RegistrationController::class, 'payment'])->name('user.events.payment');
+    Route::post('/events/{event}/payment', [RegistrationController::class, 'uploadProof'])->name('user.events.payment.store');
 });

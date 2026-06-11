@@ -210,6 +210,7 @@ Merepresentasikan tabel **`events`** — menyimpan data event yang dibuat oleh a
 | `date` | date | Tanggal pelaksanaan |
 | `location` | string | Lokasi pelaksanaan |
 | `quota` | integer | Kuota maksimal peserta |
+| `price` | integer | Harga tiket event (0 berarti gratis) |
 | `poster` | string (nullable) | Path file poster di storage atau URL eksternal |
 | `status` | enum | Status event (`available`, `full`, `finished`, `cancelled`) |
 
@@ -232,6 +233,7 @@ Merepresentasikan tabel **`registrations`** — tabel transaksi yang menghubungk
 | `user_id` | FK → users.id | ID peserta yang mendaftar |
 | `event_id` | FK → events.id | ID event yang didaftari |
 | `status` | enum | Status pendaftaran (`pending`, `accepted`, `rejected`, `cancelled`) |
+| `payment_proof` | string (nullable)| Path file bukti pembayaran yang diunggah peserta |
 
 **Relasi:**
 
@@ -345,7 +347,7 @@ Menampilkan dashboard peserta dengan statistik pribadi dan riwayat pendaftaran.
 
 ### 5.7 User\RegistrationController (`User/RegistrationController.php`)
 
-Menangani proses pendaftaran event oleh peserta. Controller ini menegakkan **6 aturan bisnis** sebelum pendaftaran berhasil:
+Menangani proses pendaftaran event oleh peserta. Controller ini menegakkan **6 aturan bisnis** sebelum pendaftaran berhasil diproses:
 
 | # | Aturan Bisnis | Implementasi |
 |---|--------------|-------------|
@@ -356,7 +358,9 @@ Menangani proses pendaftaran event oleh peserta. Controller ini menegakkan **6 a
 | 5 | Tidak boleh mendaftar event `cancelled` | Dicakup oleh pengecekan status #2 |
 | 6 | Kuota tidak boleh penuh | `if ($registeredCount >= $event->quota)` → tolak |
 
-**Jika semua aturan terpenuhi:** Buat record `Registration` dengan status `pending`, redirect ke dashboard user dengan pesan sukses.
+**Jika semua aturan terpenuhi:** 
+- Untuk **Event Gratis (`price == 0`)**: Buat record `Registration` dengan status `pending`, lalu redirect langsung ke dashboard user dengan pesan sukses.
+- Untuk **Event Berbayar (`price > 0`)**: Record *belum* dibuat. Redirect user ke halaman pembayaran (`payment`). Setelah user mengunggah bukti (`uploadProof`), barulah record `Registration` dibuat dengan menyertakan data `payment_proof`.
 
 ---
 
@@ -453,16 +457,30 @@ Buka /events ──► Cari Event (Search) ──► Klik "Lihat Detail"
                                               │
                                               ▼
                               ┌─── Validasi 6 Aturan Bisnis ───┐
-                              │                                 │
-                           GAGAL                             BERHASIL
-                              │                                 │
-                              ▼                                 ▼
-                     Flash Error Message              Buat Registration
-                     (redirect back)                 (status: pending)
-                                                            │
-                                                            ▼
-                                                  Redirect ke /user/dashboard
-                                                  Flash Success Message
+                              │                                │
+                           GAGAL                           BERHASIL
+                              │                                │
+                              ▼                                ▼
+                     Flash Error Message                  Cek Harga Event
+                     (redirect back)                           │
+                                         ┌─────────────────────┴─────────────────────┐
+                                         │                                           │
+                                    Gratis (Rp 0)                            Berbayar (> Rp 0)
+                                         │                                           │
+                                         ▼                                           ▼
+                                 Buat Registration                      Redirect ke Halaman Pembayaran
+                                 (status: pending)                                   │
+                                         │                                           ▼
+                                         │                                  Upload Bukti Bayar
+                                         │                                           │
+                                         │                                           ▼
+                                         │                                 Buat Registration dengan
+                                         │                                   bukti (status: pending)
+                                         │                                           │
+                                         └─────────────────┬─────────────────────────┘
+                                                           ▼
+                                                Redirect ke /user/dashboard
+                                                   Flash Success Message
 ```
 
 ### 7.2 Alur Pengelolaan Pendaftaran (Admin Flow)

@@ -28,6 +28,7 @@ class EventController extends Controller
             'date' => 'required|date',
             'location' => 'required|string|max:255',
             'quota' => 'required|integer|min:1',
+            'price' => 'required|integer|min:0',
             'poster' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
             'status' => 'required|in:available,full,finished,cancelled',
         ]);
@@ -59,6 +60,7 @@ class EventController extends Controller
             'date' => 'required|date',
             'location' => 'required|string|max:255',
             'quota' => 'required|integer|min:1',
+            'price' => 'required|integer|min:0',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'status' => 'required|in:available,full,finished,cancelled',
         ]);

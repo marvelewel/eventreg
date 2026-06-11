@@ -22,19 +22,7 @@
     </div>
 </div>
 
-{{-- Flash Messages --}}
-@if(session('success'))
-    <div class="mb-6 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-3">
-        <i class="bi bi-check-circle-fill text-lg"></i>
-        <p class="text-sm font-medium">{{ session('success') }}</p>
-    </div>
-@endif
-@if(session('error'))
-    <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 flex items-center gap-3">
-        <i class="bi bi-exclamation-triangle-fill text-lg"></i>
-        <p class="text-sm font-medium">{{ session('error') }}</p>
-    </div>
-@endif
+
 
 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
     <div class="overflow-x-auto">
@@ -46,6 +34,7 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Event</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal Daftar</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">Bukti Bayar</th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">Aksi</th>
                 </tr>
             </thead>
@@ -63,6 +52,15 @@
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Pending</span>
                         @elseif($registration->status === 'rejected')
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10">Ditolak</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                        @if($registration->payment_proof)
+                            <a href="{{ Storage::url($registration->payment_proof) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900 transition-colors" title="Lihat Bukti">
+                                <i class="bi bi-file-earmark-image text-lg"></i> Bukti
+                            </a>
+                        @else
+                            <span class="text-slate-400">-</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">

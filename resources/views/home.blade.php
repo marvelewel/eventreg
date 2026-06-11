@@ -68,6 +68,13 @@
                     
                     <hr class="my-3 border-slate-100">
                     
+                    <div class="mt-2 mb-3">
+                        @if($event->price == 0)
+                            <span class="text-lg font-bold text-emerald-600">Gratis</span>
+                        @else
+                            <span class="text-lg font-bold text-slate-800">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                        @endif
+                    </div>
                     <div class="mt-auto flex items-center justify-between">
                         <div class="text-xs text-slate-500">
                             <span class="block font-bold text-slate-800">KUOTA</span>

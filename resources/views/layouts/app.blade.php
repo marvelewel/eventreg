@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-xs font-medium mb-4 md:mb-0">&copy; {{ date('Y') }} EventReg by Marvel Jeremia. Hak Cipta Dilindungi.</p>
+                    <p class="text-xs font-medium mb-4 md:mb-0">&copy; {{ date('Y') }} EventReg by Christabel Arrowina. Hak Cipta Dilindungi.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="text-white/80 hover:text-white"><i class="bi bi-whatsapp"></i></a>
                         <a href="#" class="text-white/80 hover:text-white"><i class="bi bi-instagram"></i></a>
@@ -108,7 +108,7 @@
     @else
         <!-- Mini Footer for Admin/User Dashboards -->
         <footer class="py-6 text-center text-sm text-slate-400 bg-slate-50 mt-auto border-t border-slate-200">
-            &copy; {{ date('Y') }} EventReg by Marvel Jeremia. Hak Cipta Dilindungi.
+            &copy; {{ date('Y') }} EventReg by Christabel Arrowina. Hak Cipta Dilindungi.
         </footer>
     @endif
 

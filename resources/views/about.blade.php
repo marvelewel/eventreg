@@ -61,7 +61,7 @@
                 MJ
             </div>
             <div class="text-left">
-                <p class="text-sm font-bold text-slate-900 leading-none mb-1">Marvel Jeremia</p>
+                <p class="text-sm font-bold text-slate-900 leading-none mb-1">Christabel Arrowina</p>
                 <p class="text-xs text-slate-500 leading-none">Final Project Pemrograman Web 2026</p>
             </div>
         </div>

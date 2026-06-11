@@ -75,6 +75,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama Peserta</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Event</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal Daftar</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">Bukti Bayar</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
                         </tr>
                     </thead>
@@ -84,6 +85,17 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{{ $reg->user->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ $reg->event->title }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ $reg->created_at->format('d M Y') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                @if($reg->payment_proof)
+                                    <a href="{{ Storage::url($reg->payment_proof) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900 transition-colors" title="Lihat Bukti">
+                                        <i class="bi bi-file-earmark-image text-lg"></i> Bukti
+                                    </a>
+                                @elseif($reg->event->price == 0)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">Gratis</span>
+                                @else
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-500">Belum Bayar</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($reg->status === 'pending')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Pending</span>
